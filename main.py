@@ -35,6 +35,9 @@ class MyPrompt(Cmd):
         rpm = int(rpm)
         self.dbusComm.setRpm(rpm)
 
+    def do_lamps(self, rpm):
+        self.dbusComm.setLamps(int(rpm))
+
     def do_demo(self, demo):
         for x in range(0, 7000, 500):
             self.dbusComm.setRpm(x)
@@ -60,6 +63,7 @@ class MyPrompt(Cmd):
     backlight_EOF = do_backlight
     setrpm_EOF = do_setrpm
     do_demoEOF = do_demo
+    do_lampsEOF = do_lamps
 
 
 if __name__ == '__main__':

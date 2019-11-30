@@ -104,6 +104,15 @@ class DbusCommunication(object):
     def setOil(self, temperature):
         self.setAnalog("e", temperature)
 
+    def setLamps(self,lamps):
+        hexStr = "0c"
+        hexStr += "09"
+        hexStr += "00"
+        #for x in range(6):
+        #    hexStr += "00"
+        self._execute(IKE, hexStr)
+
+
 
 class ProtocolError(Exception):
     pass
