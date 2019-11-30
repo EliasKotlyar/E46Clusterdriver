@@ -34,9 +34,10 @@ class CanCommunication:
 
     def blink(self):
         for x in range(3):
+            self.setValue(0)
+            time.sleep(0.3)
             self.setValue(7)
             time.sleep(0.3)
-            self.setValue(0)
-
+        self.setValue(0)
 
 

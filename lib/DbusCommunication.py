@@ -1,4 +1,3 @@
-from hexdump import hexdump
 import serial
 import time
 
@@ -8,20 +7,25 @@ IKE = 0x80
 LCM = 0xD0
 
 
-class Application(object):
-    def __init__(self):
-        self._device = serial.Serial("/dev/ttyS4", 9600, parity=serial.PARITY_EVEN)
+class DbusCommunication(object):
+
+    def setup(self, config):
+        self.debug = int(config['DEFAULT']['DEBUG'])
+        if self.debug == 0:
+            self._device = serial.Serial("/dev/ttyS4", 9600, parity=serial.PARITY_EVEN)
 
     def run(self):
         for address in [MOTRONIC, AUTOMATIC_TRANSMISSION, IKE, LCM]:
             print("Querying " + hex(address))
             data = self._execute(address, bytes([0x00]))
             print("Got:")
-            hexdump(data)
+            # print(hex(data))
             # Delay to work around unknown issue (perhaps a bug in MultiCom?)
             time.sleep(0.03)
 
-    def _execute(self, address, payload):
+    def _execute(self, address, payload_str):
+        payload = bytes.fromhex(payload_str)
+
         self._write(address, payload)
         echo = self._read()
         self._device.timeout = 5
@@ -48,7 +52,7 @@ class Application(object):
         size = 2 + len(payload) + 1
         message = bytes([address, size]) + payload
         buf = message + bytes([self._checksum(message)])
-        hexdump(buf)
+        # hexdump(buf)
         self._device.write(buf)
 
     def _read(self):
@@ -74,6 +78,32 @@ class Application(object):
             result ^= b
         return result
 
+    def setAnalog(self, input, value):
+        hexStr = "0c"
+        hexStr += "0" + input
+        hexStr += format(value, '04x')
+        print(hexStr)
+        self._execute(IKE, hexStr)
+        pass
+
+    def setKilometer(self, kmh):
+        self.setAnalog("a", kmh)
+
+    def setRpm(self, rpm):
+        rpm = rpm / 1000
+        rpm = rpm * 316
+        rpm = int(round(rpm, 0))
+        self.setAnalog("b", rpm)
+
+    def setFuel(self, fuel):
+        self.setAnalog("c", fuel)
+
+    def setCoolant(self, temperature):
+        self.setAnalog("d", temperature)
+
+    def setOil(self, temperature):
+        self.setAnalog("e", temperature)
+
 
 class ProtocolError(Exception):
     pass
@@ -89,4 +119,3 @@ class InvalidAddress(Exception):
 
 class InvalidCommand(Exception):
     pass
-
