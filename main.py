@@ -36,7 +36,10 @@ class MyPrompt(Cmd):
         self.dbusComm.setRpm(rpm)
 
     def do_lamps(self, rpm):
-        self.dbusComm.setLamps(int(rpm))
+        for x in range(0, 255):
+            self.dbusComm.setLamps(int(x))
+            sleep(0.2)
+
 
     def do_demo(self, demo):
         for x in range(0, 7000, 500):
