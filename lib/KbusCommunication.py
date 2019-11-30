@@ -19,7 +19,7 @@ class KbusCommunication:
 
     def onIBUSpacket(self, packet):
         pass
-        #print(packet)
+        # print(packet)
 
     def setup(self, config):
         self.debug = int(config['DEFAULT']['DEBUG'])
@@ -49,5 +49,15 @@ class KbusCommunication:
         packet = ibus_.IBUSPacket(source_id="d0",
                                   length="08",
                                   destination_id="bf",
-                                  data="5b01740a3c00")
+                                  data="5b 01 74 0a 3c 00")
+        self.ibus.send(packet.raw)
+
+    def sendMessage(self, toAdr, dataHex):
+        length = int(len(dataHex) / 2) + 2
+        length = format(length, '02x')
+        packet = ibus_.IBUSPacket(source_id="3f",
+                                  length=length,
+                                  destination_id=toAdr,
+                                  data=dataHex)
+        print(packet.raw)
         self.ibus.send(packet.raw)
