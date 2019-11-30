@@ -102,7 +102,7 @@ class IBUSService(object):
                              | ------ Length -------|
         """
         packets = []
-        hex_dump = dump.encode("hex")
+        hex_dump = dump.hex()
 
         while index < len(hex_dump):
             try:
@@ -140,6 +140,8 @@ class IBUSService(object):
                 expected_packet_length = (2 + 2 + 2 + total_length_hex_chars + 2)
                 if current_packet.__len__() != expected_packet_length:
                     print("Unexpected packet length. Dump: %s" % hex_dump)
+                    print("Expected packet length. Dump: %d" % expected_packet_length)
+                    print("Current packet length. Dump: %d" % current_packet.__len__())
                     continue
 
                 # create packet
@@ -178,7 +180,10 @@ class IBUSService(object):
         Writes the provided hex packet(s) to the bus
         """
         try:
-            self.handle.write(hex_value.decode("hex"))
+            hex_value = bytes.fromhex(hex_value)
+            self.handle.write(hex_value)
+        except TypeError as e:
+            print(e)
         except Exception as e:
             print("Cannot write to IBUS: " + e.message + "\nDump: " + hex_value)
 

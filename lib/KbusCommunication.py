@@ -3,6 +3,7 @@
 """
 Class for driving the Instrument Cluster over the K-Bus
 """
+from time import sleep
 
 from . import IBUSService as ibus_
 
@@ -16,8 +17,9 @@ class KbusCommunication:
     def onIBUSready(self):
         pass
 
-    def onIBUSpacket(packet):
-        print(packet)
+    def onIBUSpacket(self, packet):
+        pass
+        #print(packet)
 
     def setup(self, config):
         self.debug = int(config['DEFAULT']['DEBUG'])
@@ -32,7 +34,20 @@ class KbusCommunication:
         print('Setting backlight to ' + str(value))
 
         packet = ibus_.IBUSPacket(source_id="d0",
-                                  length="06",
+                                  length="08",
                                   destination_id="bf",
-                                  data="5b00760a3c00")
+                                  data="5b01740a3c00")
+        self.ibus.send(packet.raw)
+        sleep(0.1)
+        packet = ibus_.IBUSPacket(source_id="d0",
+                                  length="07",
+                                  destination_id="bf",
+                                  data="5ce037ff00")
+
+        self.ibus.send(packet.raw)
+        sleep(0.1)
+        packet = ibus_.IBUSPacket(source_id="d0",
+                                  length="08",
+                                  destination_id="bf",
+                                  data="5b01740a3c00")
         self.ibus.send(packet.raw)
