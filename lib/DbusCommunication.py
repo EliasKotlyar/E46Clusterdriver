@@ -104,10 +104,10 @@ class DbusCommunication(object):
     def setOil(self, temperature):
         self.setAnalog("e", temperature)
 
-    def setLamps(self,lamps):
+    def setLamps(self,value):
         hexStr = "0c"
         hexStr += "09"
-        hexStr += "00"
+        hexStr += format(value, '02x')
         #for x in range(6):
         #    hexStr += "00"
         self._execute(IKE, hexStr)
