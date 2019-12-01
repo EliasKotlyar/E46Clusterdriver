@@ -32,7 +32,7 @@ class MyPrompt(Cmd):
         pass
 
     def do_test(self, inp):
-        self.kbusComm.sendMessage("80","0C09FF")
+        #self.dbusComm.setLamps(255)
         pass
 
     def do_setrpm(self, rpm):
