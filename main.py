@@ -28,11 +28,23 @@ class MyPrompt(Cmd):
         pass
 
     def do_backlight(self, inp):
-        self.kbusComm.setBacklight(1)
+        self.kbusComm.setBacklight(inp)
         pass
 
+    def do_setrpm(self, inp):
+        inp = int(inp)
+        if(inp == 0):
+            inp = 255
+        self.dbusComm.setLamps(inp)
+        #for x in range(0, 1000):
+        #    self.kbusComm.sendMessage("80","0c09ff010203040506")
+        pass
+
+
     def do_test(self, inp):
-        #self.dbusComm.setLamps(255)
+        self.dbusComm.acticateTest()
+        sleep(10)
+        self.dbusComm.deactivateTest()
         pass
 
     def do_setrpm(self, rpm):
@@ -40,11 +52,11 @@ class MyPrompt(Cmd):
         self.dbusComm.setRpm(rpm)
 
     def do_lamps(self, rpm):
-        for x in range(0, 5):
-            self.dbusComm.setLamps(255)
-            sleep(1)
-            self.dbusComm.setLamps(0)
-            sleep(1)
+        #for x in range(0, 5):
+        self.dbusComm.setLamps(255)
+        #    sleep(1)
+        #    self.dbusComm.setLamps(0)
+        #    sleep(1)
 
 
     def do_demo(self, demo):

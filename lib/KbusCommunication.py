@@ -18,8 +18,9 @@ class KbusCommunication:
         pass
 
     def onIBUSpacket(self, packet):
+        #print(packet)
         pass
-        # print(packet)
+
 
     def setup(self, config):
         self.debug = int(config['DEFAULT']['DEBUG'])
@@ -33,24 +34,32 @@ class KbusCommunication:
     def setBacklight(self, value):
         print('Setting backlight to ' + str(value))
 
-        packet = ibus_.IBUSPacket(source_id="d0",
-                                  length="08",
-                                  destination_id="bf",
-                                  data="5b01740a3c00")
-        self.ibus.send(packet.raw)
-        sleep(0.1)
-        packet = ibus_.IBUSPacket(source_id="d0",
-                                  length="07",
-                                  destination_id="bf",
-                                  data="5ce037ff00")
+        #packet = ibus_.IBUSPacket(source_id="d0",
+        #                          length="08",
+        #                          destination_id="bf",
+        #                          data="5b01740a3c00")
+        #self.ibus.send(packet.raw)
+        #sleep(0.1)
+        if(int(value) == 1):
+            packet = ibus_.IBUSPacket(source_id="d0",
+                                      length="07",
+                                      destination_id="bf",
+                                      data="5ce037ff00")
+        else:
+            packet = ibus_.IBUSPacket(source_id="d0",
+                                      length="07",
+                                      destination_id="bf",
+                                      data="5cff3fff00")
+
+
 
         self.ibus.send(packet.raw)
-        sleep(0.1)
-        packet = ibus_.IBUSPacket(source_id="d0",
-                                  length="08",
-                                  destination_id="bf",
-                                  data="5b 01 74 0a 3c 00")
-        self.ibus.send(packet.raw)
+        #sleep(0.1)
+        #packet = ibus_.IBUSPacket(source_id="d0",
+        #                          length="08",
+        #                          destination_id="bf",
+        #                          data="5b 01 74 0a 3c 00")
+        #self.ibus.send(packet.raw)
 
     def sendMessage(self, toAdr, dataHex):
         length = int(len(dataHex) / 2) + 2

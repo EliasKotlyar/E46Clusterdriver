@@ -112,6 +112,17 @@ class DbusCommunication(object):
         #    hexStr += "00"
         self._execute(IKE, hexStr)
 
+    def acticateTest(self):
+        hexStr = "30"
+        hexStr += "b4"
+        self._execute(IKE, hexStr)
+
+    def deactivateTest(self):
+        hexStr = "9f"
+        hexStr += "1b"
+        self._execute(IKE, hexStr)
+
+
 
 
 class ProtocolError(Exception):
