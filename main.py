@@ -23,6 +23,8 @@ class MyPrompt(Cmd):
         self.kbusComm.setup(config)
         self.dbusComm.setup(config)
 
+        #self.canComm.setRpm(7000)
+
     def do_blink(self, inp):
         self.canComm.blink()
         pass
@@ -33,9 +35,14 @@ class MyPrompt(Cmd):
 
     def do_setrpm(self, inp):
         inp = int(inp)
-        if(inp == 0):
-            inp = 255
-        self.dbusComm.setLamps(inp)
+        if (inp == 0):
+            inp = 7000
+
+        self.canComm.setRpm(inp)
+
+        #if(inp == 0):
+        #    inp = 255
+        #self.dbusComm.setLamps(inp)
         #for x in range(0, 1000):
         #    self.kbusComm.sendMessage("80","0c09ff010203040506")
         pass
@@ -49,11 +56,13 @@ class MyPrompt(Cmd):
 
     def do_setrpm(self, rpm):
         rpm = int(rpm)
-        self.dbusComm.setRpm(rpm)
+        #self.dbusComm.setRpm(rpm)
+        self.canComm.setRpm(rpm)
 
     def do_lamps(self, rpm):
+        rpm = int(rpm)
         #for x in range(0, 5):
-        self.dbusComm.setLamps(255)
+        self.dbusComm.setLamps(rpm)
         #    sleep(1)
         #    self.dbusComm.setLamps(0)
         #    sleep(1)
