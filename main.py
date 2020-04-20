@@ -54,6 +54,13 @@ class MyPrompt(Cmd):
         self.dbusComm.deactivateTest()
         pass
 
+    def do_fuel(self, inp):
+        self.canComm.setRpm(1)
+        sleep(10)
+        self.canComm.setRpm(1000)
+        pass
+
+
     def do_setrpm(self, rpm):
         rpm = int(rpm)
         #self.dbusComm.setRpm(rpm)
@@ -92,9 +99,10 @@ class MyPrompt(Cmd):
     blink_EOF = do_blink
     backlight_EOF = do_backlight
     setrpm_EOF = do_setrpm
-    do_demoEOF = do_demo
-    do_lampsEOF = do_lamps
-    do_testEOF = do_test
+    do_demo_EOF = do_demo
+    do_lamps_EOF = do_lamps
+    do_test_EOF = do_test
+    do_fuel_EOF = do_fuel
 
 
 if __name__ == '__main__':
