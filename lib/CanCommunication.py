@@ -19,7 +19,7 @@ class CanCommunication:
     )
 
     rpm_message = can.Message(
-        arbitration_id=0x316, data=[0, 0, 0, 0, 0, 0, 0, 0], is_extended_id=False
+        arbitration_id=0x316, data=[0x05, 0x62, 0, 0, 0x65, 0x12, 0x0, 0x62], is_extended_id=False
     )
 
     def setup(self,config):
@@ -29,8 +29,8 @@ class CanCommunication:
         else:
             self.bus = can.interface.Bus(channel="can0", bustype="socketcan")
 
-        self.task_rpm = self.bus.send_periodic(self.rpm_message, 1)
-        self.task_led = self.bus.send_periodic(self.led_message, 0.03)
+        self.task_rpm = self.bus.send_periodic(self.rpm_message, 0.03)
+        #self.task_led = self.bus.send_periodic(self.led_message, 0.03)
 
 
     def setValue(self, x):
