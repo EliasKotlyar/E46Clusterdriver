@@ -37,7 +37,7 @@ class CanCommunication:
     def setValue(self, x):
         self.led_message.data[3] = int("0x" + str(x) + "0", 16)
         #self.led_message.data[4]
-        self.task.modify_data(self.led_message)
+        self.task_led.modify_data(self.led_message)
         print(self.led_message)
 
     def blink(self):
@@ -55,7 +55,7 @@ class CanCommunication:
         fuel = self.toUint16(fuel)
         self.led_message.data[1] = fuel[0]
         self.led_message.data[2] = fuel[1]
-        self.task_rpm.modify_data(self.rpm_message)
+        self.task_led.modify_data(self.led_message)
 
     def toUint16(self,rpm):
         rpm_uint16 = int(rpm)

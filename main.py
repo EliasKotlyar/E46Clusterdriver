@@ -55,9 +55,11 @@ class MyPrompt(Cmd):
         pass
 
     def do_fuel(self, inp):
-        self.canComm.setRpm(1)
-        sleep(10)
-        self.canComm.setRpm(1000)
+
+        for x in range(0, 0xFFFF, 1):
+            self.canComm.fuelconsumption(x)
+            if (x % 1000 == 0):
+                sleep(0.01)
         pass
 
 
